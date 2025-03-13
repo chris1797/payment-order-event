@@ -2,12 +2,14 @@ package core.carrotkotlin.domain
 
 import core.carrotkotlin.dto.user.SignupRequest
 import core.carrotkotlin.dto.user.UserResponse
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val passwordEncoder: BCryptPasswordEncoder
 ) {
 
     @Transactional
@@ -22,6 +24,7 @@ class UserService(
             password = request.password,
             location = null
         )
+        user.encodePassword(passwordEncoder)
 
         val savedUser = userRepository.save(user);
         return UserResponse(
