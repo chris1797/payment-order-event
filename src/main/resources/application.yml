@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/carrot
-    username: root
-    password: 1234
+    url: jdbc:postgresql://localhost:5432
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
 
   jpa:
