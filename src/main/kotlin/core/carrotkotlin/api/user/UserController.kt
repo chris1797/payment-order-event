@@ -1,8 +1,8 @@
-package core.carrotkotlin.domain
+package core.carrotkotlin.api.user
 
-import core.carrotkotlin.dto.user.SignupRequest
-import core.carrotkotlin.dto.user.UserResponse
+import core.carrotkotlin.domain.user.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,5 +17,10 @@ class UserController(
     @PostMapping("/signup")
     fun signUp(@RequestBody request: SignupRequest): ResponseEntity<UserResponse> {
         return ResponseEntity.ok(userService.signUp(request))
+    }
+
+    @PatchMapping("/login")
+    fun login(@RequestBody request: LoginRequest): ResponseEntity<UserResponse> {
+        return ResponseEntity.ok(userService.signIn(request))
     }
 }

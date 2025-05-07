@@ -1,7 +1,8 @@
-package core.carrotkotlin.domain
+package core.carrotkotlin.domain.user
 
-import core.carrotkotlin.dto.user.SignupRequest
-import core.carrotkotlin.dto.user.UserResponse
+import core.carrotkotlin.api.user.LoginRequest
+import core.carrotkotlin.api.user.SignupRequest
+import core.carrotkotlin.api.user.UserResponse
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,7 +15,7 @@ class UserService(
 
     @Transactional
     fun signUp(request: SignupRequest): UserResponse {
-        if (userRepository.findByEmail(request.email).isNotEmpty()) {
+        if (userRepository.findByEmail(request.email) != null) {
             throw IllegalArgumentException("Email already exists")
         }
 
@@ -31,6 +32,21 @@ class UserService(
             id = savedUser.id,
             email = savedUser.email,
             name = savedUser.name
+        )
+    }
+
+    fun signIn(request: LoginRequest): UserResponse {
+        val user = userRepository.findByEmail(request.email)
+            ?: throw IllegalArgumentException("User not found")
+
+        if (!passwordEncoder.matches(request.password, user.password)) {
+            throw IllegalArgumentException("Invalid password")
+        }
+
+        return UserResponse(
+            id = user.id,
+            email = user.email,
+            name = user.name
         )
     }
 
