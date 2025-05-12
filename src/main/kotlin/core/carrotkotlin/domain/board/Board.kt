@@ -11,6 +11,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
@@ -28,7 +29,11 @@ class Board(
     @Column(nullable = false)
     val title: String,
 
+    @Column(nullable = false)
+    val content: String,
 
-
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    val createdAt: String? = null,
     ) {
 }
