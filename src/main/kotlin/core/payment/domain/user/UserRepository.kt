@@ -1,4 +1,4 @@
-package core.carrotkotlin.domain.user
+package core.payment.domain.user
 
 import org.springframework.data.jpa.repository.JpaRepository
 

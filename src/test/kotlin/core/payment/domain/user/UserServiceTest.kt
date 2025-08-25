@@ -1,7 +1,7 @@
-package core.carrotkotlin.domain.user
+package core.payment.domain.user
 
-import core.carrotkotlin.api.user.LoginRequest
-import core.carrotkotlin.api.user.UserResponse
+import core.payment.api.user.LoginRequest
+import core.payment.api.user.UserResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

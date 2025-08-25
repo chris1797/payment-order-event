@@ -1,4 +1,4 @@
-package core.carrotkotlin.api.user
+package core.payment.api.user
 
 data class SignupRequest(
     val name: String,

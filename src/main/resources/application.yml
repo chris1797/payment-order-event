@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/do_develop?currentSchema=carrot
+    url: jdbc:postgresql://localhost:5432/do_develop?currentSchema=payment-order
     username:
     password:
     driver-class-name: org.postgresql.Driver

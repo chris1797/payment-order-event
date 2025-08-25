@@ -1,1 +1,1 @@
-rootProject.name = "carrot-kotlin"
+rootProject.name = "payment-order-event"

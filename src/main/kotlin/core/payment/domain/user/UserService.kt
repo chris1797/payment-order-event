@@ -1,8 +1,8 @@
-package core.carrotkotlin.domain.user
+package core.payment.domain.user
 
-import core.carrotkotlin.api.user.LoginRequest
-import core.carrotkotlin.api.user.SignupRequest
-import core.carrotkotlin.api.user.UserResponse
+import core.payment.api.user.LoginRequest
+import core.payment.api.user.SignupRequest
+import core.payment.api.user.UserResponse
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

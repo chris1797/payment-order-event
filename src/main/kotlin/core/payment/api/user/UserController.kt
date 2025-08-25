@@ -1,6 +1,6 @@
-package core.carrotkotlin.api.user
+package core.payment.api.user
 
-import core.carrotkotlin.domain.user.UserService
+import core.payment.domain.user.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping

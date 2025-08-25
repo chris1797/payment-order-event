@@ -1,6 +1,6 @@
-package core.carrotkotlin.domain.board
+package core.payment.domain.board
 
-import core.carrotkotlin.domain.user.User
+import core.payment.domain.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners

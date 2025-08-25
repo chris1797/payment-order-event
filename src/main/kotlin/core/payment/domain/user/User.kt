@@ -1,6 +1,6 @@
-package core.carrotkotlin.domain.user
+package core.payment.domain.user
 
-import core.carrotkotlin.enums.Role
+import core.payment.enums.Role
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners

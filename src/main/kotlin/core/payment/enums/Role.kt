@@ -1,4 +1,4 @@
-package core.carrotkotlin.enums
+package core.payment.enums
 
 enum class Role {
     USER,
