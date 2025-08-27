@@ -4,6 +4,7 @@ import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.http.HttpStatus
 import org.springframework.kafka.core.KafkaTemplate
@@ -14,6 +15,7 @@ import java.time.Duration
 import java.util.Properties
 import kotlin.system.measureTimeMillis
 
+@Profile("cloud")
 @Component
 class KafkaWarmupRunner(
     private val kafkaTemplate: KafkaTemplate<String, String>
