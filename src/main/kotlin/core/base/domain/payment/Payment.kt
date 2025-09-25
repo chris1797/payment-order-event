@@ -28,8 +28,24 @@ class Payment(
     @Column(nullable = false)
     val status: PaymentStatus = PaymentStatus.INITIATED,
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    val method: PaymentMethod = PaymentMethod.CREDIT_CARD,
+
     // 멱등, 추적용 PG사 transaction id (개발 환경에서는 generateRandomId() 등으로 생성)
     @Column(name = "tx_id", nullable = false, unique = true)
     val txId: String
 
-    ): BaseEntity()
+): BaseEntity()
+
+
+enum class PaymentStatus {
+    INITIATED,
+    APPROVED,
+    DECLINED,
+}
+
+enum class PaymentMethod {
+    CREDIT_CARD,
+    CASH,
+}

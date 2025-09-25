@@ -15,7 +15,7 @@ class OrderServiceTest {
     private val orderService = OrderService(orderRepository)
 
     @Test
-    fun `getOrders should return list of OrderResponse from repository`() {
+    fun `getOrders() should return list of OrderResponse from repository`() {
         // given
         val orders = OrderFixture.createOrders()
         every { orderRepository.findAll() } returns orders
@@ -41,7 +41,7 @@ class OrderServiceTest {
     }
 
     @Test
-    fun `getOrders should return empty list when no orders exist`() {
+    fun `getOrders() 에서 주문이 없을 때 빈 리스트를 반환하는지 검증`() {
         // given
         every { orderRepository.findAll() } returns emptyList()
 
@@ -49,6 +49,7 @@ class OrderServiceTest {
         val result = orderService.getOrders()
 
         // then
+        // 리스트가 비어있는지 검증
         verify { orderRepository.findAll() }
         assertEquals(0, result.size)
     }
