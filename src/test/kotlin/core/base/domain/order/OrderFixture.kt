@@ -6,12 +6,14 @@ import java.math.BigDecimal
 object OrderFixture {
     fun createOrder(
         id: Long? = null,
+        quantity: Int = 1,
         totalAmount: BigDecimal = BigDecimal("100.00"),
         status: OrderStatus = OrderStatus.PENDING
     ): Order {
         val order = Order(
+            quantity = quantity,
             totalAmount = totalAmount,
-            status = status
+            status = OrderStatus.PENDING,
         )
 
         // ID 설정 (테스트용)
@@ -22,9 +24,9 @@ object OrderFixture {
 
     fun createOrders(): List<Order> {
         return listOf(
-            createOrder(1L, BigDecimal("100.00"), OrderStatus.PENDING),
-            createOrder(2L, BigDecimal("200.50"), OrderStatus.PAID),
-            createOrder(3L, BigDecimal("150.75"), OrderStatus.CANCELLED)
+            createOrder(1L, 1, BigDecimal("100.00"), OrderStatus.PENDING),
+            createOrder(2L, 1, BigDecimal("200.50"), OrderStatus.PAID),
+            createOrder(3L, 1, BigDecimal("150.75"), OrderStatus.CANCELLED)
         )
     }
 
