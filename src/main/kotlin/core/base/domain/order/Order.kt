@@ -13,10 +13,13 @@ import java.math.BigDecimal
 class Order(
 
     @Column(nullable = false)
+    val productName: String,
+
+    @Column(nullable = false)
     val quantity: Int = 1,
 
     @Column(nullable = false, precision = 15, scale = 2)
-    val totalAmount: BigDecimal,
+    val totalAmount: BigDecimal = BigDecimal.ZERO,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
