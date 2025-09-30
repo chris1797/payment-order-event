@@ -14,9 +14,12 @@ class User(
     @Column(nullable = false)
     val userName: String,
 
+    @Column(nullable = false)
+    val address: String,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val status: UserStatus,
+    val status: UserStatus = UserStatus.ACTIVE
 
 ): BaseEntity() {
 

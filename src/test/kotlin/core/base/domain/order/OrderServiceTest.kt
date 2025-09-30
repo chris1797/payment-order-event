@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 class OrderServiceTest {
 
     private val orderRepository = mockk<OrderRepository>()
-    private val orderService = OrderService(orderRepository)
+    private val orderService = OrderService(orderRepository, mockk())
 
     @Test
     fun `getOrders() should return list of OrderResponse from repository`() {
