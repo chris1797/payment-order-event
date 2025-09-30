@@ -1,6 +1,7 @@
 package core.base.service
 
 import core.base.domain.user.User
+import core.base.domain.user.UserDto
 import core.base.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

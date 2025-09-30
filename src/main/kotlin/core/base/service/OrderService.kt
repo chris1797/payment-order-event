@@ -3,7 +3,6 @@ package core.base.service
 import core.base.api.controller.OrderResponse
 import core.base.api.request.OrderCreateRequest
 import core.base.domain.order.OrderRepository
-import core.base.domain.user.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,12 +18,10 @@ class OrderService(
 
     @Transactional(rollbackFor = [Exception::class])
     fun createOrder(createRequest: OrderCreateRequest) {
-        val user = userService.getUserById(createRequest.userId)
+        val userEntity = userService.getUserById(createRequest.userId)
+        val order = createRequest.toEntity(userEntity)
 
-        val order = createRequest.toEntity(user.id, user.address)
-
-        TODO("Not yet implemented")
-
+        orderRepository.save(order)
 
     }
 }

@@ -10,14 +10,13 @@ data class OrderCreateRequest(
     val quantity: Int,
     val totalAmount: BigDecimal,
 ) {
-    fun toEntity(userId: Long, address: String): Order {
-        // Convert to Order entity
-         return Order(
-             userId = userId,
-             address = address,
-             productName = productName,
-             quantity = quantity,
-             totalAmount = totalAmount
-         )
+    fun toEntity(user: User): Order {
+        return Order(
+            user = user,
+            address = user.address,
+            productName = productName,
+            quantity = quantity,
+            totalAmount = totalAmount,
+        )
     }
 }

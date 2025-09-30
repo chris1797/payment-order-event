@@ -2,6 +2,7 @@ package core.base.domain.order
 
 import core.base.domain.common.BaseEntity
 import core.base.domain.user.User
+import core.base.domain.user.UserDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -17,8 +18,11 @@ import java.math.BigDecimal
 class Order(
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    val user: User,
+    @JoinColumn(name = "user_id")
+    var user: User?,
+
+    @Column(nullable = false)
+    var address: String?,
 
     @Column(nullable = false)
     val productName: String,
@@ -33,4 +37,8 @@ class Order(
     @Column(nullable = false)
     val status: OrderStatus = OrderStatus.PENDING
 
-): BaseEntity()
+
+
+): BaseEntity() {
+
+}

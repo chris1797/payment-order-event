@@ -1,5 +1,6 @@
 package core.base.domain.order
 
+import core.base.domain.user.User
 import java.lang.reflect.Field
 import java.math.BigDecimal
 
@@ -19,6 +20,7 @@ object OrderFixture {
             quantity = quantity,
             totalAmount = totalAmount,
             status = OrderStatus.PENDING,
+            user = User(userName = "Test User", address = "123 Test St") // 임시 사용자 객체
         )
 
         // ID 설정 (테스트용)
