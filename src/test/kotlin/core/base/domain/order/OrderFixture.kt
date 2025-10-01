@@ -20,7 +20,8 @@ object OrderFixture {
             quantity = quantity,
             totalAmount = totalAmount,
             status = OrderStatus.PENDING,
-            user = User(userName = "Test User", address = "123 Test St") // 임시 사용자 객체
+            user = User(userName = "Test User", address = "123 Test St"),
+            address = "123 Test St"
         )
 
         // ID 설정 (테스트용)

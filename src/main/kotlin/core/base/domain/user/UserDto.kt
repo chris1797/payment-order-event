@@ -9,7 +9,6 @@ data class UserDto(
 ) {
     fun toEntity(): User? {
         return User(
-            id = id,
             userName = userName,
             address = address,
             status = status

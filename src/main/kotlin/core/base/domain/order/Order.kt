@@ -41,4 +41,20 @@ class Order(
 
 ): BaseEntity() {
 
+    companion object {
+        fun create(
+            user: User,
+            productName: String,
+            quantity: Int,
+            totalAmount: BigDecimal
+        ): Order {
+            return Order(
+                user = user,
+                address = user.address,
+                productName = productName,
+                quantity = quantity,
+                totalAmount = totalAmount
+            )
+        }
+    }
 }

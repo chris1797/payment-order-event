@@ -19,7 +19,7 @@ class OrderController(
     fun createOrder(
         orderRequest: OrderCreateRequest
     ): ResponseEntity<Void>? {
-        orderService.createOrder(orderRequest)
+        orderService.saveOrder(orderRequest)
         return ResponseEntity.ok().build()
     }
 
