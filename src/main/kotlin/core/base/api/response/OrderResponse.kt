@@ -1,4 +1,4 @@
-package core.base.api.controller
+package core.base.api.response
 
 import core.base.domain.order.Order
 import core.base.domain.order.OrderStatus
@@ -18,4 +18,3 @@ data class OrderResponse(
         )
     }
 }
-

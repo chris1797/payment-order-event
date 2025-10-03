@@ -2,7 +2,6 @@ package core.base.domain.order
 
 import core.base.domain.common.BaseEntity
 import core.base.domain.user.User
-import core.base.domain.user.UserDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -42,7 +41,7 @@ class Order(
 ): BaseEntity() {
 
     companion object {
-        fun create(
+        fun of(
             user: User,
             productName: String,
             quantity: Int,
