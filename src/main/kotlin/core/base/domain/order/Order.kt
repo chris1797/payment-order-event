@@ -34,7 +34,7 @@ class Order(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val status: OrderStatus = OrderStatus.PENDING
+    var status: OrderStatus = OrderStatus.PENDING
 
 
 
@@ -55,5 +55,10 @@ class Order(
                 totalAmount = totalAmount
             )
         }
+    }
+
+    fun markAsCompleted(): Order {
+        this.status = OrderStatus.COMPLETED
+        return this
     }
 }

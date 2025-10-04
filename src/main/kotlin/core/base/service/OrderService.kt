@@ -18,14 +18,11 @@ class OrderService(
 ) {
 
 
-    fun getOrders(): List<OrderResponse> =
-        orderRepository.findAll().map { OrderResponse.from(it) }
-
     /**
      * 주문 생성
      */
     @Transactional(readOnly = false)
-    fun saveOrder(createRequest: OrderCreateRequest): Order {
+    fun saveOrder(createRequest: OrderCreateRequest): OrderResponse {
         validateOrderRequest(createRequest)
 
         // 사용자 조회 후 주문 생성
@@ -37,9 +34,10 @@ class OrderService(
             totalAmount = createRequest.totalAmount
         )
 
-        paymentService.processPayment(order, user)
+        val savedOrder = orderRepository.save(order)
+        val payedOrder = paymentService.processPayment(savedOrder, user)
 
-        return orderRepository.save(order)
+        return OrderResponse.from(payedOrder, user)
     }
 
     /**

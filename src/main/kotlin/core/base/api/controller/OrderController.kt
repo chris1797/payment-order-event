@@ -13,8 +13,6 @@ class OrderController(
     private val orderService: OrderService
 ) {
 
-    @GetMapping("/orders")
-    fun getOrders(): List<OrderResponse> = orderService.getOrders()
 
     @PostMapping("/order")
     fun createOrder(

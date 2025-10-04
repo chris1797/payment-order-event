@@ -2,6 +2,6 @@ package core.base.domain.order
 
 enum class OrderStatus {
     PENDING,
-    PAID,
+    COMPLETED,
     CANCELLED
 }

@@ -2,7 +2,9 @@ package core.base.domain.order
 
 import core.base.api.request.OrderCreateRequest
 import core.base.domain.user.User
+import core.base.repository.PaymentRepository
 import core.base.service.OrderService
+import core.base.service.PaymentService
 import core.base.service.UserService
 import io.mockk.every
 import io.mockk.mockk
@@ -17,43 +19,12 @@ import kotlin.test.assertTrue
 class OrderServiceTest {
 
     private val orderRepository = mockk<OrderRepository>()
+    private val paymentRepository = mockk<PaymentRepository>()
     private val userService = mockk<UserService>()
-    private val orderService = OrderService(orderRepository, userService)
+    private val paymentService = mockk<PaymentService>()
+    private val orderService = OrderService(userService, paymentService, orderRepository)
 
-    @Test
-    fun `getOrders() should return list of OrderResponse from repository`() {
-        // given
-        val orders = OrderFixture.createOrders()
-        every { orderRepository.findAll() } returns orders
 
-        // when
-        val result = orderService.getOrders()
-
-        // then
-        verify { orderRepository.findAll() }
-
-        assertAll(
-            { assertEquals(1L, result[0].id) },
-            { assertEquals(2L, result[1].id) },
-            { assertEquals(3L, result[2].id) },
-            { assertTrue(result.all { it.status == OrderStatus.PENDING }) }, // 모든 주문 상태가 PENDING인지 확인
-
-        )
-    }
-
-    @Test
-    fun `getOrders() 에서 주문이 없을 때 빈 리스트를 반환하는지 검증`() {
-        // given
-        every { orderRepository.findAll() } returns emptyList()
-
-        // when
-        val result = orderService.getOrders()
-
-        // then
-        // 리스트가 비어있는지 검증
-        verify { orderRepository.findAll() }
-        assertEquals(0, result.size)
-    }
 
     @Test
     fun `saveOrder() 정상적인 주문 생성`() {
@@ -71,18 +42,33 @@ class OrderServiceTest {
             quantity = request.quantity,
             totalAmount = request.totalAmount
         )
+        val completedOrder = OrderFixture.createOrder(
+            id = 1L,
+            productName = request.productName,
+            quantity = request.quantity,
+            totalAmount = request.totalAmount
+        ).markAsCompleted()
 
         every { userService.getUserById(1L) } returns user
         every { orderRepository.save(any()) } returns savedOrder
+        every { paymentService.processPayment(savedOrder, user) } returns completedOrder
 
         // when
-        val result = orderService.saveOrder(request)
+        val orderResponse = orderService.saveOrder(request)
 
         // then
-        verify { userService.getUserById(1L) }
-        verify { orderRepository.save(any()) }
-        assertEquals(savedOrder.id, result.id)
-        assertEquals(savedOrder.productName, result.productName)
+        verify(exactly = 1) { userService.getUserById(1L) }
+        verify(exactly = 1) { orderRepository.save(any()) }
+        verify(exactly = 1) { paymentService.processPayment(savedOrder, user) }
+
+        // 비즈니스 로직 검증: 주문 생성 및 결제 완료
+        assertAll(
+            { assertEquals(1L, orderResponse.id) },
+            { assertEquals(request.totalAmount, orderResponse.totalAmount) },
+            { assertEquals(OrderStatus.COMPLETED, orderResponse.status) },
+            { assertEquals(user.id, orderResponse.userId) },
+            { assertEquals(user.userName, orderResponse.userName) }
+        )
     }
 
     @Test
