@@ -25,12 +25,7 @@ class User(
     @Column(nullable = false)
     val status: UserStatus = UserStatus.ACTIVE,
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    val orders: MutableList<Order> = mutableListOf()
-
-): BaseEntity() {
-
-}
+): BaseEntity()
 
 enum class UserStatus {
     ACTIVE,

@@ -1,7 +1,8 @@
-package core.base.domain.order
+package core.base.support.order
 
+import core.base.domain.order.Order
+import core.base.domain.order.OrderStatus
 import core.base.domain.user.User
-import java.lang.reflect.Field
 import java.math.BigDecimal
 
 object OrderFixture {
@@ -24,9 +25,6 @@ object OrderFixture {
             address = "123 Test St"
         )
 
-        // ID 설정 (테스트용)
-        id?.let { setId(order, it) }
-
         return order
     }
 
@@ -36,11 +34,5 @@ object OrderFixture {
             createOrder(2L, "product2", 1, BigDecimal("200.50")),
             createOrder(3L, "product3", 1, BigDecimal("150.75"))
         )
-    }
-
-    private fun setId(order: Order, id: Long) {
-        val idField: Field = order.javaClass.superclass.getDeclaredField("id")
-        idField.isAccessible = true
-        idField.set(order, id)
     }
 }

@@ -18,12 +18,12 @@ abstract class BaseEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+) {
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    val createdAt: LocalDateTime? = null,
+    var createdAt: LocalDateTime? = null
 
     @LastModifiedDate
     @Column(nullable = false)
-    val updatedAt: LocalDateTime? = null
-
-)
+    var updatedAt: LocalDateTime? = null
+}

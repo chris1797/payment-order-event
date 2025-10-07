@@ -1,9 +1,8 @@
-package core.base.service
+package core.base.domain.payment
 
-import core.base.domain.order.OrderRepository
 import core.base.repository.PaymentRepository
+import core.base.service.PaymentService
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions.*
 
 class PaymentServiceTest {
 
