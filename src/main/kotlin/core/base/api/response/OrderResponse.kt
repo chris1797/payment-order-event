@@ -15,12 +15,12 @@ data class OrderResponse(
     val userName: String,
 ) {
     companion object {
-        fun from(order: Order, user: User): OrderResponse = OrderResponse(
+        fun from(order: Order): OrderResponse = OrderResponse(
             id = order.id!!,
             totalAmount = order.totalAmount,
             status = order.status,
-            userId = user.id!!,
-            userName = user.userName,
+            userId = order.user!!.id!!,
+            userName = order.user!!.userName,
         )
     }
 }

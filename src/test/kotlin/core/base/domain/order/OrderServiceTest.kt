@@ -14,16 +14,60 @@ import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class OrderServiceTest {
 
     private val orderRepository = mockk<OrderRepository>()
-    private val paymentRepository = mockk<PaymentRepository>()
     private val userService = mockk<UserService>()
     private val paymentService = mockk<PaymentService>()
     private val orderService = OrderService(userService, paymentService, orderRepository)
 
+    /**
+     * 주문 로직에서 단위테스트
+     * 1. request의 검증
+     * 2. order 저장 후 반환 검증
+     * 3. 결제 단계 검증
+     */
+
+    @Test
+    fun `OrderRequest 의 수량(quantity) 이 0개 일 때 exception 발생`() {
+        val testQuantity = 0
+
+        // given & when
+        val request = OrderCreateRequest(
+            userId = 1L,
+            productName = "Test Product",
+            quantity = testQuantity,
+            totalAmount = BigDecimal("200.00")
+        )
+
+        // when & then
+        val exception = assertThrows<IllegalArgumentException> {
+            request.validateOrderRequest()
+        }
+
+        assertEquals(OrderCreateRequest.ExceptionMessage.QUANTITY_VALIDATION.name, exception.message)
+    }
+
+    @Test
+    fun `OrderRequest 의 총 금액(totalAmount) 가 0원 일 때 exception 발생`() {
+        val testTotalAmount = BigDecimal.ZERO
+
+        // given & when
+        val request = OrderCreateRequest(
+            userId = 1L,
+            productName = "Test Product",
+            quantity = 1,
+            totalAmount = testTotalAmount
+        )
+
+        // when & then
+        val exception = assertThrows<IllegalArgumentException> {
+            request.validateOrderRequest()
+        }
+
+        assertEquals(OrderCreateRequest.ExceptionMessage.TOTAL_AMOUNT_VALIDATION.name, exception.message)
+    }
 
 
     @Test
@@ -71,71 +115,4 @@ class OrderServiceTest {
         )
     }
 
-    @Test
-    fun `saveOrder() 수량이 0 이하일 때 예외 발생`() {
-        // given
-        val request = OrderCreateRequest(
-            userId = 1L,
-            productName = "Test Product",
-            quantity = 0,
-            totalAmount = BigDecimal("100.00")
-        )
-
-        // when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            orderService.saveOrder(request)
-        }
-        assertEquals("주문 수량은 0보다 커야 합니다", exception.message)
-    }
-
-    @Test
-    fun `saveOrder() 수량이 음수일 때 예외 발생`() {
-        // given
-        val request = OrderCreateRequest(
-            userId = 1L,
-            productName = "Test Product",
-            quantity = -5,
-            totalAmount = BigDecimal("100.00")
-        )
-
-        // when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            orderService.saveOrder(request)
-        }
-        assertEquals("주문 수량은 0보다 커야 합니다", exception.message)
-    }
-
-    @Test
-    fun `saveOrder() 금액이 0일 때 예외 발생`() {
-        // given
-        val request = OrderCreateRequest(
-            userId = 1L,
-            productName = "Test Product",
-            quantity = 1,
-            totalAmount = BigDecimal.ZERO
-        )
-
-        // when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            orderService.saveOrder(request)
-        }
-        assertEquals("주문 금액은 0보다 커야 합니다", exception.message)
-    }
-
-    @Test
-    fun `saveOrder() 금액이 음수일 때 예외 발생`() {
-        // given
-        val request = OrderCreateRequest(
-            userId = 1L,
-            productName = "Test Product",
-            quantity = 1,
-            totalAmount = BigDecimal("-100.00")
-        )
-
-        // when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            orderService.saveOrder(request)
-        }
-        assertEquals("주문 금액은 0보다 커야 합니다", exception.message)
-    }
 }

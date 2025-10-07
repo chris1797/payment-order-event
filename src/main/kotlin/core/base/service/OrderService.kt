@@ -23,7 +23,7 @@ class OrderService(
      */
     @Transactional(readOnly = false)
     fun saveOrder(createRequest: OrderCreateRequest): OrderResponse {
-        validateOrderRequest(createRequest)
+        createRequest.validateOrderRequest()
 
         // 사용자 조회 후 주문 생성
         val user = userService.getUserById(createRequest.userId)
@@ -37,14 +37,7 @@ class OrderService(
         val savedOrder = orderRepository.save(order)
         val payedOrder = paymentService.processPayment(savedOrder, user)
 
-        return OrderResponse.from(payedOrder, user)
+        return OrderResponse.from(payedOrder)
     }
 
-    /**
-     * 주문 요청 유효성 검사
-     */
-    private fun validateOrderRequest(request: OrderCreateRequest) {
-        require(request.quantity > 0) { "주문 수량은 0보다 커야 합니다" }
-        require(request.totalAmount > BigDecimal.ZERO) { "주문 금액은 0보다 커야 합니다" }
-    }
 }
