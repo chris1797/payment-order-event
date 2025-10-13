@@ -1,9 +1,6 @@
-package core.base.domain.order.unit
+package core.base.domain.order
 
 import core.base.api.request.OrderCreateRequest
-import core.base.domain.order.Order
-import core.base.domain.order.OrderRepository
-import core.base.domain.order.OrderStatus
 import core.base.domain.user.User
 import core.base.domain.user.UserStatus
 import core.base.service.OrderService

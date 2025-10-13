@@ -1,10 +1,9 @@
 package core.base
 
+import core.base.config.IntegrationTestBase
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
-class CarrotKotlinApplicationTests {
+class CarrotKotlinApplicationTests : IntegrationTestBase() {
 
     @Test
     fun contextLoads() {

@@ -1,6 +1,7 @@
 package core.base.domain.order.integration
 
 import core.base.api.request.OrderCreateRequest
+import core.base.config.IntegrationTestBase
 import core.base.domain.order.OrderStatus
 import core.base.domain.user.User
 import core.base.domain.user.UserFixture
@@ -12,13 +13,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
-@SpringBootTest
-@Transactional
-class OrderServiceTest {
+class OrderServiceTest : IntegrationTestBase() {
 
     @Autowired
     private lateinit var orderService: OrderService
