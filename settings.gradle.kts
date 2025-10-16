@@ -1,4 +1,5 @@
 rootProject.name = "payment-order-event"
 
-include("payment")
-include("order")
+include("payment-service")
+include("order-service")
+include("user-service")
