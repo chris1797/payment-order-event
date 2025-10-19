@@ -2,8 +2,8 @@ server:
   port: 8080
 
 spring:
-  profiles:
-    active: monolith
+#  profiles:
+#    active: monolith
 
   datasource:
     url: jdbc:postgresql://localhost:5432/dev?currentSchema=payment-order

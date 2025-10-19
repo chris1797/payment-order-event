@@ -9,6 +9,7 @@ class OrderEventsSmokeProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>
 ): CommandLineRunner {
 
+    // 애플리케이션 시작 시 Kafka 토픽에 메시지를 전송하여 연결 상태를 확인
     override fun run(vararg args: String?) {
         val topic = "order-events" // Kafka 토픽 이름
         val message = "Order service is up and running!" // 전송할 메시지

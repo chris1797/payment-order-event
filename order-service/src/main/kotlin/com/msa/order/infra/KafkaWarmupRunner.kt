@@ -64,9 +64,11 @@ class KafkaWarmupRunner(
                 } catch (e: Exception) {
                     log.info("Waiting for Kafka cluster to be available...", e)
                 }
+
                 if (System.currentTimeMillis() > end) {
                     throw IllegalStateException("Timed out waiting for Kafka cluster to be available")
                 }
+
                 Thread.sleep(500)
             }
         }
@@ -99,9 +101,12 @@ class KafkaWarmupRunner(
             } catch (e: Exception) {
                 log.info("Waiting for Schema Registry to be available...", e)
             }
+
+            // 타임아웃 체크
             if (System.currentTimeMillis() > end) {
                 throw IllegalStateException("Timed out waiting for Schema Registry to be available")
             }
+
             Thread.sleep(500)
         }
     }
