@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class OrderEventsTestController(
+class OrderEventController(
     private val kafkaTemplate: KafkaTemplate<String, String>,
 ) {
+
+    @GetMapping("/test")
+    fun test(): String {
+        return "Controller is working!"
+    }
 
     @GetMapping("/_probe/send")
     fun sendTestMessage(@RequestParam msg: String?): String {
