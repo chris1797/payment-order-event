@@ -1,6 +1,10 @@
 package com.msa.order.config
 
+import com.msa.order.events.OrderCreated
+import io.confluent.kafka.serializers.KafkaAvroSerializer
 import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.common.serialization.StringSerializer
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.core.DefaultKafkaProducerFactory
@@ -10,16 +14,22 @@ import org.springframework.kafka.core.ProducerFactory
 @Configuration
 class KafkaConfig {
 
+    @Value("\${spring.kafka.bootstrap-servers}")
+    private lateinit var bootstrapServers: String
+
+    @Value("\${spring.kafka.producer.properties.schema.registry.url}")
+    private lateinit var schemaRegistryUrl: String
+
     /*
-    Kafka Producer 설정
-    application.yml에만 설정해도 스프링이 자동으로 구성하지만, 명시적으로 확인용으로 작성
+    Kafka Producer 설정 (Avro Serializer 사용)
      */
     @Bean
-    fun producerFactory(): ProducerFactory<String, String> {
+    fun producerFactory(): ProducerFactory<String, OrderCreated> {
         val props = mapOf(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to "org.apache.kafka.common.serialization.StringSerializer",
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to "org.apache.kafka.common.serialization.StringSerializer",
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to KafkaAvroSerializer::class.java,
+            "schema.registry.url" to schemaRegistryUrl,
             ProducerConfig.ACKS_CONFIG to "all",
             ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG to true
         )
@@ -27,7 +37,7 @@ class KafkaConfig {
     }
 
     @Bean
-    fun kafkaTemplate(): KafkaTemplate<String, String> =
+    fun kafkaTemplate(): KafkaTemplate<String, OrderCreated> =
         KafkaTemplate(producerFactory())
 
 }

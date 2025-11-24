@@ -5,7 +5,7 @@ spring:
   profiles:
     active: cloud
   datasource:
-    url: jdbc:postgresql://localhost:5432/do_develop?currentSchema=payment-order
+    url: jdbc:postgresql://localhost:5432/dev?currentSchema=payment-order
     username:
     password:
     driver-class-name: org.postgresql.Driver
@@ -28,4 +28,6 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081

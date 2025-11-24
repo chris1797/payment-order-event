@@ -1,0 +1,29 @@
+{
+  "type": "record",
+  "name": "OrderCreated",
+  "namespace": "com.msa.order.events",
+  "doc": "Event published when a new order is created",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": "string",
+      "doc": "Unique identifier for the order"
+    },
+    {
+      "name": "orderCode",
+      "type": "string",
+      "doc": "Human-readable order code"
+    },
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Event timestamp in milliseconds since epoch"
+    },
+    {
+      "name": "eventType",
+      "type": "string",
+      "default": "ORDER_CREATED",
+      "doc": "Type of the event"
+    }
+  ]
+}

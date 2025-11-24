@@ -18,7 +18,7 @@ import kotlin.system.measureTimeMillis
 @Profile("cloud")
 @Component
 class KafkaWarmupRunner(
-    private val kafkaTemplate: KafkaTemplate<String, String>
+    private val kafkaTemplate: KafkaTemplate<String, com.msa.order.events.OrderCreated>
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -37,7 +37,13 @@ class KafkaWarmupRunner(
         log.info("Bootstrap Servers: $bootstrapServers")
         log.info("Schema Registry URL: $schemaRegistryUrl")
         // Send a test message to warm up the Kafka connection
-        kafkaTemplate.send(topic, "warmup-key", "warmup-message")
+        val warmupEvent = com.msa.order.events.OrderCreated.newBuilder()
+            .setOrderId("warmup-id")
+            .setOrderCode("WARMUP")
+            .setTimestamp(System.currentTimeMillis())
+            .setEventType("ORDER_CREATED")
+            .build()
+        kafkaTemplate.send(topic, "warmup-key", warmupEvent)
         log.info("Sent warmup message to topic '$topic'")
     }
 
@@ -94,12 +100,16 @@ class KafkaWarmupRunner(
                     connectTimeout = 2000
                     readTimeout = 2000
                 }
-                if (connection.responseCode == HttpStatus.OK.value()) {
-                    log.info("Connected to Schema Registry at $schemaRegistryUrl")
-                    return
+                try {
+                    if (connection.responseCode == HttpStatus.OK.value()) {
+                        log.info("Connected to Schema Registry at $schemaRegistryUrl")
+                        return
+                    }
+                } finally {
+                    connection.disconnect()
                 }
             } catch (e: Exception) {
-                log.info("Waiting for Schema Registry to be available...", e)
+                log.debug("Waiting for Schema Registry to be available...", e)
             }
 
             // 타임아웃 체크

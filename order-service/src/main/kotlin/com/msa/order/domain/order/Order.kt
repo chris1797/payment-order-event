@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @EntityListeners(AuditingEntityListener::class)
 class Order (
 
+
     @Column(nullable = false)
     val orderCode: String,
 
