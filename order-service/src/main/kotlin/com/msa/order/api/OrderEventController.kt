@@ -30,8 +30,8 @@ class OrderEventController(
             .build()
 
         // 메시지 전송
-        kafkaTemplate.send(topic, event.getOrderId().toString(), event)
+        kafkaTemplate.send(topic, event.orderId.toString(), event)
 
-        return "Sent OrderCreated event to topic '$topic': ${event.getOrderCode()}"
+        return "Sent OrderCreated event to topic '$topic': ${event.orderCode}"
     }
 }

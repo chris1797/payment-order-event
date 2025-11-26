@@ -1,5 +1,6 @@
 package com.msa.order.infra
 
+import com.msa.order.events.OrderCreated
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.slf4j.LoggerFactory
@@ -37,7 +38,7 @@ class KafkaWarmupRunner(
         log.info("Bootstrap Servers: $bootstrapServers")
         log.info("Schema Registry URL: $schemaRegistryUrl")
         // Send a test message to warm up the Kafka connection
-        val warmupEvent = com.msa.order.events.OrderCreated.newBuilder()
+        val warmupEvent = OrderCreated.newBuilder()
             .setOrderId("warmup-id")
             .setOrderCode("WARMUP")
             .setTimestamp(System.currentTimeMillis())
@@ -64,7 +65,7 @@ class KafkaWarmupRunner(
                 try {
                     val cluster = adminClient.describeCluster().clusterId().get()
                     if (cluster.isNotEmpty()) {
-                        log.info("Connected to Kafka cluster with topics: $cluster")
+                        log.info("Connected to Kafka cluster with id: $cluster")
                         return
                     }
                 } catch (e: Exception) {

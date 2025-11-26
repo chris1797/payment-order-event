@@ -24,12 +24,12 @@ class OrderEventsSmokeProducer(
             .build()
 
         // 메시지 전송
-        kafkaTemplate.send(topic, event.getOrderId().toString(), event)
+        kafkaTemplate.send(topic, event.orderId.toString(), event)
             .whenComplete { _, ex ->
                 if (ex != null) {
                     println("❌ Failed to send message: ${ex.message}")
                 } else {
-                    println("✅ Successfully sent OrderCreated event to topic '$topic': ${event.getOrderCode()}")
+                    println("✅ Successfully sent OrderCreated event to topic '$topic': ${event.orderCode}")
                 }
             }
     }
