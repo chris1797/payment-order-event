@@ -1,37 +1,48 @@
 package com.msa.order.api
 
-import com.msa.order.events.OrderCreated
-import org.springframework.kafka.core.KafkaTemplate
+import com.msa.order.domain.order.Order
+import com.msa.order.domain.order.OrderService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 @RestController
+@RequestMapping("/api/orders")
 class OrderEventController(
-    private val kafkaTemplate: KafkaTemplate<String, OrderCreated>,
+    private val orderService: OrderService,
 ) {
 
-    @GetMapping("/test")
-    fun test(): String {
-        return "Controller is working!"
+    @PostMapping
+    fun createOrder(@RequestBody request: CreateOrderRequest): ResponseEntity<OrderResponse> {
+        val order = orderService.createOrder(request.orderCode)
+        return ResponseEntity.ok(OrderResponse.from(order))
     }
 
-    @GetMapping("/_probe/send")
-    fun sendTestMessage(@RequestParam orderCode: String?): String {
-        val topic = "order-events" // Kafka 토픽 이름
+    @GetMapping
+    fun getOrder(orderCode: String): ResponseEntity<OrderResponse> {
+        val order = orderService.findByOrderCode(orderCode)
+            ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok(OrderResponse.from(order))
+    }
+}
 
-        // Avro 이벤트 생성
-        val event = OrderCreated.newBuilder()
-            .setOrderId(UUID.randomUUID().toString())
-            .setOrderCode(orderCode ?: "PROBE-TEST")
-            .setTimestamp(System.currentTimeMillis())
-            .setEventType("ORDER_CREATED")
-            .build()
+data class CreateOrderRequest(
+    val orderCode: String
+)
 
-        // 메시지 전송
-        kafkaTemplate.send(topic, event.orderId.toString(), event)
-
-        return "Sent OrderCreated event to topic '$topic': ${event.orderCode}"
+data class OrderResponse(
+    val id: Long,
+    val orderCode: String,
+) {
+    companion object {
+        fun from(order: Order): OrderResponse {
+            return OrderResponse(
+                id = order.id!!,
+                orderCode = order.orderCode
+            )
+        }
     }
 }
