@@ -1,6 +1,7 @@
 package com.msa.order.domain.order
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.msa.order.api.CreateOrderRequest
 import com.msa.order.domain.outbox.Outbox
 import com.msa.order.domain.outbox.OutboxRepository
 import org.springframework.stereotype.Service
@@ -21,9 +22,12 @@ class OrderService(
      * 주문 생성 및 Outbox 이벤트 저장
      */
     @Transactional
-    fun createOrder(orderCode: String): Order {
+    fun createOrder(request: CreateOrderRequest): Order {
+        // 0. 주문 엔티티 생성
+        val newOrder = Order.createNewOrder(request)
+
         // 1. 주문 정보 db 저장
-        val order = orderRepository.save(Order(orderCode))
+        val order = orderRepository.save(newOrder)
 
         // 2. Outbox 이벤트 저장 (같은 트랜잭션 내에서)
         val eventPayload = mapOf(
